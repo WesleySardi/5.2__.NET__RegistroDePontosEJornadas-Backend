@@ -1,83 +1,83 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjetoBMA.Data;
-using ProjetoBMA.Entities;
-using ProjetoBMA.Utils;
+using ProjetoBMA.Domain.Entities;
+using ProjetoBMA.DTOs.Queries;
+using ProjetoBMA.Repositories.Interfaces;
 
 namespace ProjetoBMA.Repositories
 {
     public class TimeEntryRepository : ITimeEntryRepository
     {
-        private readonly AppDbContext _ctx;
+        private readonly AppDbContext _context;
 
-        public TimeEntryRepository(AppDbContext ctx)
+        public TimeEntryRepository(AppDbContext context)
         {
-            _ctx = ctx;
+            _context = context;
         }
 
         public async Task AddAsync(TimeEntry entry, CancellationToken ct = default)
         {
-            await _ctx.TimeEntries.AddAsync(entry, ct);
-            await _ctx.SaveChangesAsync(ct);
+            await _context.TimeEntries.AddAsync(entry, ct);
         }
 
-        public async Task DeleteAsync(TimeEntry entry, CancellationToken ct = default)
+        public Task UpdateAsync(TimeEntry entry, CancellationToken ct = default)
         {
-            _ctx.TimeEntries.Remove(entry);
-            await _ctx.SaveChangesAsync(ct);
+            _context.TimeEntries.Attach(entry);
+            _context.Entry(entry).State = EntityState.Modified;
+            return Task.CompletedTask;
+        }
+
+        public Task DeleteAsync(TimeEntry entry, CancellationToken ct = default)
+        {
+            _context.TimeEntries.Remove(entry);
+            return Task.CompletedTask;
         }
 
         public async Task<TimeEntry?> GetByIdAsync(Guid id, CancellationToken ct = default)
         {
-            return await _ctx.TimeEntries.FirstOrDefaultAsync(x => x.Id == id, ct);
-        }
-
-        public async Task<PagedResult<TimeEntry>> GetPagedAsync(string? employeeId, string? type, DateTime? from, DateTime? to, int page, int pageSize, string? sort, CancellationToken ct = default)
-        {
-            var query = _ctx.TimeEntries.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(employeeId))
-                query = query.Where(x => x.EmployeeId == employeeId);
-
-            if (!string.IsNullOrWhiteSpace(type))
-                query = query.Where(x => x.Type == type);
-
-            if (from.HasValue)
-                query = query.Where(x => x.Timestamp >= from.Value);
-
-            if (to.HasValue)
-                query = query.Where(x => x.Timestamp <= to.Value);
-
-            // Sorting
-            query = sort switch
-            {
-                "timestamp_desc" => query.OrderByDescending(x => x.Timestamp),
-                "timestamp_asc" => query.OrderBy(x => x.Timestamp),
-                "employeeName_asc" => query.OrderBy(x => x.EmployeeName),
-                "employeeName_desc" => query.OrderByDescending(x => x.EmployeeName),
-                _ => query.OrderByDescending(x => x.Timestamp)
-            };
-
-            var total = await query.CountAsync(ct);
-            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync(ct);
-
-            return new PagedResult<TimeEntry>
-            {
-                Items = items,
-                TotalCount = total,
-                Page = page,
-                PageSize = pageSize
-            };
-        }
-
-        public async Task UpdateAsync(TimeEntry entry, CancellationToken ct = default)
-        {
-            _ctx.TimeEntries.Update(entry);
-            await _ctx.SaveChangesAsync(ct);
+            return await _context.TimeEntries.FirstOrDefaultAsync(x => x.Id == id, ct);
         }
 
         public async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
         {
-            return await _ctx.TimeEntries.AnyAsync(x => x.Id == id, ct);
+            return await _context.TimeEntries.AnyAsync(x => x.Id == id, ct);
+        }
+        public IQueryable<TimeEntry> Query()
+        {
+            return _context.TimeEntries.AsQueryable();
+        }
+
+        public async Task<int> SaveChangesAsync(CancellationToken ct = default)
+        {
+            return await _context.SaveChangesAsync(ct);
+        }
+
+        public IQueryable<TimeEntry> GetAllAsync(TimeEntryQueryParametersQuery query, CancellationToken ct = default)
+        {
+            var result = _context.TimeEntries.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.EmployeeId))
+                result = result.Where(x => x.EmployeeId == query.EmployeeId);
+
+            if (query.Type.HasValue)
+                result = result.Where(x => x.Type == query.Type);
+
+            if (query.From.HasValue)
+                result = result.Where(x => x.Timestamp >= query.From.Value);
+
+            if (query.To.HasValue)
+                result = result.Where(x => x.Timestamp <= query.To.Value);
+
+            result = query.Sort switch
+            {
+                "timestamp_desc" => result.OrderByDescending(x => x.Timestamp),
+                "timestamp_asc" => result.OrderBy(x => x.Timestamp),
+                "employeeName_asc" => result.OrderBy(x => x.EmployeeName),
+                "employeeName_desc" => result.OrderByDescending(x => x.EmployeeName),
+                _ => result.OrderByDescending(x => x.Timestamp)
+            };
+
+            return result;
         }
     }
 }

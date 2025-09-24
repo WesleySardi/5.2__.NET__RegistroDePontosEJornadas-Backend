@@ -1,32 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ProjetoBMA.Domain.Enums;
 
-namespace ProjetoBMA.Entities
+namespace ProjetoBMA.DTOs.Results
 {
-    public class TimeEntry
+    public class TimeEntryResult
     {
-        [Key]
         public Guid Id { get; set; }
-
-        [Required]
-        [MaxLength(50)]
         public string EmployeeId { get; set; } = null!;
-
-        [Required]
-        [MaxLength(200)]
         public string EmployeeName { get; set; } = null!;
-
-        [Required]
         public DateTime Timestamp { get; set; }
-
-        [Required]
-        [MaxLength(20)]
-        public string Type { get; set; } = null!;
-
-        [MaxLength(100)]
+        public TimeEntryType? Type { get; set; } = null!;
         public string? Location { get; set; }
-
         public string? Notes { get; set; }
-
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }

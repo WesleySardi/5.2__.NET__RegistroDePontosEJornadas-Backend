@@ -1,18 +1,15 @@
-﻿namespace ProjetoBMA.DTOs
+﻿using ProjetoBMA.Domain.Enums;
+
+namespace ProjetoBMA.DTOs.Queries
 {
-    public class TimeEntryQueryParameters
+    public class TimeEntryQueryParametersQuery
     {
         public string? EmployeeId { get; set; }
-        public string? Type { get; set; } // Entrada, Saída, Intervalo
+        public TimeEntryType? Type { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
-
         public int Page { get; set; } = 1;
         public int PageSize { get; set; } = 20;
-
-        /// <summary>
-        /// ex: timestamp_desc, timestamp_asc, employeeName_asc
-        /// </summary>
         public string? Sort { get; set; }
     }
 }

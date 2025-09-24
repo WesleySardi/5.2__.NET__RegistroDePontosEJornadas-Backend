@@ -12,7 +12,7 @@ using ProjetoBMA.Data;
 namespace ProjetoBMA.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250919015019_InitialCreate")]
+    [Migration("20250924020520_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace ProjetoBMA.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProjetoBMA.Entities.TimeEntry", b =>
+            modelBuilder.Entity("ProjetoBMA.Domain.Entities.TimeEntry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,10 +54,9 @@ namespace ProjetoBMA.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
+                    b.Property<int>("Type")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");

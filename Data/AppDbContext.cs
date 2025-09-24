@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjetoBMA.Entities;
+using ProjetoBMA.Domain.Entities;
 
 namespace ProjetoBMA.Data
 {
@@ -21,7 +21,6 @@ namespace ProjetoBMA.Data
                 b.Property(x => x.Type).IsRequired().HasMaxLength(20);
                 b.Property(x => x.Timestamp).IsRequired();
 
-                // Índices importantes
                 b.HasIndex(x => x.EmployeeId);
                 b.HasIndex(x => x.Timestamp);
                 b.HasIndex(x => x.Type);

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjetoBMA.Entities;
+using ProjetoBMA.Domain.Entities;
 
 namespace ProjetoBMA.Data
 {
@@ -17,7 +17,7 @@ namespace ProjetoBMA.Data
                     EmployeeId = "EMP001",
                     EmployeeName = "João Silva",
                     Timestamp = DateTime.UtcNow.AddDays(-1).AddHours(8),
-                    Type = "Entrada",
+                    Type = Domain.Enums.TimeEntryType.Entrada,
                     Location = "Portaria A",
                     Notes = "Entrada padrão",
                     CreatedAt = DateTime.UtcNow
@@ -28,7 +28,7 @@ namespace ProjetoBMA.Data
                     EmployeeId = "EMP001",
                     EmployeeName = "João Silva",
                     Timestamp = DateTime.UtcNow.AddDays(-1).AddHours(12),
-                    Type = "Saída",
+                    Type = Domain.Enums.TimeEntryType.Intervalo,
                     CreatedAt = DateTime.UtcNow
                 },
                 new TimeEntry
@@ -37,7 +37,7 @@ namespace ProjetoBMA.Data
                     EmployeeId = "EMP002",
                     EmployeeName = "Maria Oliveira",
                     Timestamp = DateTime.UtcNow.AddHours(-2),
-                    Type = "Entrada",
+                    Type = Domain.Enums.TimeEntryType.Saida,
                     CreatedAt = DateTime.UtcNow
                 }
             };

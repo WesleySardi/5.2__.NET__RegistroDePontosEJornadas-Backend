@@ -1,6 +1,8 @@
-﻿using ProjetoBMA.DTOs;
-using ProjetoBMA.Entities;
-using AutoMapper;
+﻿using AutoMapper;
+using ProjetoBMA.Domain.Entities;
+using ProjetoBMA.DTOs.Commands;
+using ProjetoBMA.DTOs.Results;
+using ProjetoBMA.DTOs.ViewModels;
 
 namespace ProjetoBMA.Mappings
 {
@@ -8,9 +10,10 @@ namespace ProjetoBMA.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<CreateTimeEntryDto, TimeEntry>();
-            CreateMap<UpdateTimeEntryDto, TimeEntry>();
-            CreateMap<TimeEntry, TimeEntryDto>();
+            CreateMap<TimeEntry, TimeEntryViewModel>();
+            CreateMap<CreateTimeEntryCommand, TimeEntry>();
+            CreateMap<UpdateTimeEntryCommand, TimeEntry>();
+            CreateMap<TimeEntry, TimeEntryResult>();
         }
     }
 }

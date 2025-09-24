@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Text.Json;
 
 namespace ProjetoBMA.Middleware
@@ -22,19 +23,50 @@ namespace ProjetoBMA.Middleware
             {
                 await _next(context);
             }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning(ex, "ArgumentException");
-                var pd = _problemDetailsFactory.CreateProblemDetails(context, statusCode: StatusCodes.Status400BadRequest, detail: ex.Message);
-                context.Response.ContentType = "application/problem+json";
-                context.Response.StatusCode = pd.Status ?? StatusCodes.Status400BadRequest;
-                await context.Response.WriteAsync(JsonSerializer.Serialize(pd));
-            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unhandled exception");
-                var pd = _problemDetailsFactory.CreateProblemDetails(context, statusCode: StatusCodes.Status500InternalServerError, detail: "Ocorreu um erro interno.");
+
                 context.Response.ContentType = "application/problem+json";
+
+                ProblemDetails pd;
+
+                switch (ex)
+                {
+                    case ArgumentException argEx:
+                        _logger.LogWarning(argEx, "ArgumentException");
+                        pd = _problemDetailsFactory.CreateProblemDetails(
+                            context,
+                            statusCode: StatusCodes.Status400BadRequest,
+                            detail: argEx.Message
+                        );
+                        break;
+
+                    case KeyNotFoundException _:
+                        pd = _problemDetailsFactory.CreateProblemDetails(
+                            context,
+                            statusCode: StatusCodes.Status404NotFound,
+                            detail: "Recurso não encontrado"
+                        );
+                        break;
+
+                    case UnauthorizedAccessException _:
+                        pd = _problemDetailsFactory.CreateProblemDetails(
+                            context,
+                            statusCode: StatusCodes.Status401Unauthorized,
+                            detail: "Acesso não autorizado"
+                        );
+                        break;
+
+                    default:
+                        pd = _problemDetailsFactory.CreateProblemDetails(
+                            context,
+                            statusCode: StatusCodes.Status500InternalServerError,
+                            detail: "Ocorreu um erro interno."
+                        );
+                        break;
+                }
+
                 context.Response.StatusCode = pd.Status ?? StatusCodes.Status500InternalServerError;
                 await context.Response.WriteAsync(JsonSerializer.Serialize(pd));
             }
