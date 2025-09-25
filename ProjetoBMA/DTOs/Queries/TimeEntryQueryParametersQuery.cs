@@ -5,7 +5,7 @@ namespace ProjetoBMA.DTOs.Queries
     public class TimeEntryQueryParametersQuery
     {
         public string? EmployeeId { get; set; }
-        public TimeEntryType? Type { get; set; }
+        public string? Type { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }
         public int Page { get; set; } = 1;

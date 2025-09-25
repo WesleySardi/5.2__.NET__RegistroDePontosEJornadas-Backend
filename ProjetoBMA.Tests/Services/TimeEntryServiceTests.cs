@@ -40,7 +40,7 @@ namespace ProjetoBMA.Tests.Services
                 EmployeeId = "123",
                 EmployeeName = "Teste",
                 Timestamp = DateTime.UtcNow,
-                Type = Domain.Enums.TimeEntryType.Entrada
+                Type = "Entrada"
             };
 
             var result = await _service.CreateAsync(command);

@@ -50,7 +50,7 @@ namespace ProjetoBMA.Tests.Controllers
         [Fact]
         public async Task Create_ReturnsCreatedAtAction()
         {
-            var command = new CreateTimeEntryCommand { EmployeeId = "123", EmployeeName = "Teste", Timestamp = DateTime.UtcNow, Type = Domain.Enums.TimeEntryType.Entrada };
+            var command = new CreateTimeEntryCommand { EmployeeId = "123", EmployeeName = "Teste", Timestamp = DateTime.UtcNow, Type = "Entrada" };
             var created = new TimeEntryResult { Id = Guid.NewGuid(), EmployeeId = "123", EmployeeName = "Teste" };
 
             _serviceMock.Setup(s => s.CreateAsync(command, default)).ReturnsAsync(created);

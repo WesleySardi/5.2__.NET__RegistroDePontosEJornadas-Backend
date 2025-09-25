@@ -59,7 +59,7 @@ namespace ProjetoBMA.Repositories
             if (!string.IsNullOrWhiteSpace(query.EmployeeId))
                 result = result.Where(x => x.EmployeeId == query.EmployeeId);
 
-            if (query.Type.HasValue)
+            if (!string.IsNullOrWhiteSpace(query.Type))
                 result = result.Where(x => x.Type == query.Type);
 
             if (query.From.HasValue)

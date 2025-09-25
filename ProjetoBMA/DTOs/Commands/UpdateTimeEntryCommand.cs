@@ -17,7 +17,7 @@ namespace ProjetoBMA.DTOs.Commands
         public DateTime Timestamp { get; set; }
 
         [Required(ErrorMessage = "Type é obrigatório.")]
-        public TimeEntryType Type { get; set; }
+        public string Type { get; set; }
 
         [MaxLength(100)]
         public string? Location { get; set; }

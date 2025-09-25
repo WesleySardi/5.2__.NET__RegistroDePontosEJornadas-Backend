@@ -20,7 +20,7 @@ namespace ProjetoBMA.Domain.Entities
         public DateTime Timestamp { get; set; }
 
         [Required]
-        public TimeEntryType Type { get; set; }
+        public string Type { get; set; }
 
         [MaxLength(100)]
         public string? Location { get; set; }

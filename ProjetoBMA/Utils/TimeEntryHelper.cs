@@ -4,12 +4,14 @@ namespace ProjetoBMA.Utils
 {
     public static class TimeEntryHelper
     {
-        public static void EnsureValidType(TimeEntryType type)
+        public static void EnsureValidType(string type)
         {
-            if (!Enum.IsDefined(typeof(TimeEntryType), type))
+            var validNames = Enum.GetNames(typeof(TimeEntryType));
+
+            if (!validNames.Contains(type, StringComparer.OrdinalIgnoreCase))
             {
                 throw new ArgumentException(
-                    $"Tipo inválido. Valores permitidos: {string.Join(", ", Enum.GetNames(typeof(TimeEntryType)))}"
+                    $"Tipo inválido. Valores permitidos: {string.Join(", ", validNames)}"
                 );
             }
         }

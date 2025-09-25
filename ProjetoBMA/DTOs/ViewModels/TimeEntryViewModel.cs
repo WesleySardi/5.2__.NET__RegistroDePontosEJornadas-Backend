@@ -8,7 +8,7 @@ namespace ProjetoBMA.DTOs.ViewModels
         public string EmployeeId { get; set; } = null!;
         public string EmployeeName { get; set; } = null!;
         public DateTime Timestamp { get; set; }
-        public TimeEntryType Type { get; set; }
+        public string Type { get; set; }
         public string? Location { get; set; }
         public string? Notes { get; set; }
         public DateTime CreatedAt { get; set; }

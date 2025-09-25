@@ -19,7 +19,7 @@ namespace ProjetoBMA.Migrations
                     EmployeeId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     EmployeeName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Type = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Location = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
