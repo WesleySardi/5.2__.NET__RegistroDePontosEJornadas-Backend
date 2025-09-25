@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore ProjetoBMA.Tests/ProjetoBMA.Tests.csproj
 
     - name: Build solution
-      run: dotnet build --no-restore
+      run: dotnet build ProjetoBMA.Tests/ProjetoBMA.Tests.csproj --no-restore
 
     - name: Run tests
       run: dotnet test ProjetoBMA.Tests/ProjetoBMA.Tests.csproj --no-build --verbosity normal
