@@ -9,49 +9,80 @@ using ProjetoBMA.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(conn));
-
-builder.Services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
-builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
-
-builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowLocal", policy =>
-    {
-        policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
-    });
-});
+ConfigureControllersAndSwagger(builder.Services);
+ConfigureDbContext(builder.Services, builder.Configuration);
+ConfigureRepositoriesAndServices(builder.Services);
+ConfigureAutoMapper(builder.Services);
+ConfigureCors(builder.Services);
 
 var app = builder.Build();
 
-app.UseCors("AllowLocal");
-app.UseCustomExceptionMiddleware();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-    await SeedData.EnsureSeedDataAsync(db); // Executar após o banco ser criado
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+ConfigurePipeline(app);
 
 app.Run();
+
+void ConfigureControllersAndSwagger(IServiceCollection services)
+{
+    services.AddControllers();
+    services.AddEndpointsApiExplorer();
+    services.AddSwaggerGen();
+}
+
+void ConfigureDbContext(IServiceCollection services, IConfiguration configuration)
+{
+    var conn = configuration.GetConnectionString("DefaultConnection");
+    services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(conn));
+}
+
+void ConfigureRepositoriesAndServices(IServiceCollection services)
+{
+    services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
+    services.AddScoped<ITimeEntryService, TimeEntryService>();
+}
+
+void ConfigureAutoMapper(IServiceCollection services)
+{
+    services.AddAutoMapper(typeof(MappingProfile).Assembly);
+}
+
+void ConfigureCors(IServiceCollection services)
+{
+    services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy.WithOrigins(
+                    "http://localhost:5173",
+                    "https://meu-teste.com.br"
+                )
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+    });
+}
+
+void ConfigurePipeline(WebApplication app)
+{
+    app.UseCors("AllowFrontend");
+
+    app.UseCustomExceptionMiddleware();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.Migrate();
+        SeedData.EnsureSeedDataAsync(db).Wait();
+    }
+}

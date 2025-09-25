@@ -42,7 +42,9 @@ namespace ProjetoBMA.Data
         private void ApplyAudits()
         {
             var entries = ChangeTracker.Entries<TimeEntry>();
-            var now = DateTime.UtcNow;
+
+            // var now = DateTime.UtcNow; --> Global
+            var now = DateTime.Now;    // --> Brazil
 
             foreach (var e in entries)
             {
