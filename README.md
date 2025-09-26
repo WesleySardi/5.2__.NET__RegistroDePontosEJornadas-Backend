@@ -224,17 +224,17 @@ dotnet run --launch-profile "http" --project ProjetoBMA/ProjetoBMA.csproj
 
 ```bash
 # Acessar pasta do projeto
-cd 5.2__.NET__RegistroDePontosEJornadas-Backend
+cd cd 5.2__.NET__RegistroDePontosEJornadas-Backend/ProjetoBMA.Tests
 
-# Executar API
-dotnet run --launch-profile "http" --project ProjetoBMA/ProjetoBMA.csproj
+# Executar os testes
+dotnet test
 ```
 
 ---
 
 ## Ferramentas e Tecnologias
 
-* ASP.NET Core 9.0
+* ASP.NET Core 8.0
 * EF Core 9.0
 * AutoMapper
 * SQL Server
@@ -243,6 +243,7 @@ dotnet run --launch-profile "http" --project ProjetoBMA/ProjetoBMA.csproj
 * Logging nativo (`ILogger`)
 * DTOs e ViewModels
 * Paginação genérica via `PagedResult<T>`
+* ...
 
 ---
 
