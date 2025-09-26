@@ -46,7 +46,7 @@ Tabela: `TimeEntries`
 | EmployeeId   | NVARCHAR         | NOT NULL                                   |
 | EmployeeName | NVARCHAR         | NOT NULL                                   |
 | Timestamp    | DATETIME2        | NOT NULL                                   |
-| Type         | INT              | NOT NULL (enum: Entrada, Saída, Intervalo) |
+| Type         | NVARCHAR         | NOT NULL (Entrada, Saída, Intervalo)       |
 | Location     | NVARCHAR         | NULL                                       |
 | Notes        | NVARCHAR         | NULL                                       |
 | CreatedAt    | DATETIME2        | NOT NULL (seed automático)                 |
@@ -68,11 +68,11 @@ Tabela: `TimeEntries`
 
 | Método | Rota                     | Descrição                                                                                                                                         |
 | ------ | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| GET    | `/api/time-entries`      | Lista todos os registros com filtros, paginação e ordenação. Parâmetros opcionais: `employeeId`, `type`, `from`, `to`, `page`, `pageSize`, `sort` |
-| GET    | `/api/time-entries/{id}` | Retorna um registro específico pelo ID                                                                                                            |
-| POST   | `/api/time-entries`      | Cria um novo registro                                                                                                                             |
-| PUT    | `/api/time-entries/{id}` | Atualiza um registro existente                                                                                                                    |
-| DELETE | `/api/time-entries/{id}` | Remove um registro existente                                                                                                                      |
+| GET    | `/api/TimeEntries`      | Lista todos os registros com filtros, paginação e ordenação. Parâmetros opcionais: `employeeId`, `type`, `from`, `to`, `page`, `pageSize`, `sort` |
+| GET    | `/api/TimeEntries/{id}` | Retorna um registro específico pelo ID                                                                                                            |
+| POST   | `/api/TimeEntries`      | Cria um novo registro                                                                                                                             |
+| PUT    | `/api/TimeEntries/{id}` | Atualiza um registro existente                                                                                                                    |
+| DELETE | `/api/TimeEntries/{id}` | Remove um registro existente                                                                                                                      |
 
 ---
 
