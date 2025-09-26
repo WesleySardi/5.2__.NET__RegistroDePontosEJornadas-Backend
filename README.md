@@ -247,9 +247,112 @@ dotnet test
 
 ---
 
+## 📂 Estrutura do Projeto
+
+```bash
+│   appsettings.Development.json
+│   appsettings.json
+│   Dockerfile
+│   Program.cs
+│   ProjetoBMA.csproj
+│   ProjetoBMA.csproj.user
+│   ProjetoBMA.http
+│   ProjetoBMA.sln
+│
+├───Controllers
+│       TimeEntriesController.cs
+│
+├───Data
+│       AppDbContext.cs
+│       SeedData.cs
+│
+├───Domain
+│   ├───Entities
+│   │       TimeEntry.cs
+│   │
+│   └───Enums
+│           TimeEntryType.cs
+│
+├───DTOs
+│   ├───Commands
+│   │       CreateTimeEntryCommand.cs
+│   │       UpdateTimeEntryCommand.cs
+│   │
+│   ├───Queries
+│   │       TimeEntryQueryParametersQuery.cs
+│   │
+│   ├───Results
+│   │       TimeEntryResult.cs
+│   │
+│   └───ViewModels
+│           TimeEntryViewModel.cs
+│
+├───Mappings
+│       MappingProfile.cs
+│
+├───Middleware
+│       ExceptionMiddleware.cs
+│
+├───Migrations
+│       20250925030604_InitialCreate.cs
+│       20250925030604_InitialCreate.Designer.cs
+│       AppDbContextModelSnapshot.cs
+│
+├───Properties
+│       launchSettings.json
+│
+├───Repositories
+│   │   TimeEntryRepository.cs
+│   │
+│   └───Interfaces
+│           ITimeEntryRepository.cs
+│
+├───Services
+│   │   TimeEntryService.cs
+│   │
+│   └───Interfaces
+│           ITimeEntryService.cs
+│
+└───Utils
+        PagedResult.cs
+        QueryableExtensions.cs
+        TimeEntryHelper.cs
+```
+
+---
+
+## 📂 Estrutura do Projeto de Testes
+
+```bash
+│   appsettings.Development.json
+│   appsettings.json
+│   Program.cs
+│   ProjetoBMA.Tests.csproj
+│   ProjetoBMA.Tests.csproj.user
+│   ProjetoBMA.Tests.http
+│   ProjetoBMA.Tests.sln
+│
+├───Controllers
+│       TimeEntriesControllerTests.cs
+│
+├───Properties
+│       launchSettings.json
+│
+└───Services
+        TimeEntryServiceTests.cs
+```
+
+---
+
 ## Considerações Finais
 
 * **Validações:** Todos os campos obrigatórios com Data Annotations.
 * **Auditoria:** `CreatedAt` e `UpdatedAt`.
 * **Boa prática:** Repositórios retornam entidades, Services fazem mapeamento e regras de negócio.
 * **CORS:** Configurado para permitir consumo da API pelo frontend.
+
+## 🧑‍💻 Autor
+
+Desenvolvido por **Wesley Erik Sardi**
+
+🚀 Backend em **ASP.NET Core Web API + SQL Server**
