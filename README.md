@@ -247,6 +247,89 @@ dotnet test
 
 ---
 
+## Seeds de dados.
+
+### 1. Cria uma seed de dados inicial ao executar o projeto
+
+```bash
+using Microsoft.EntityFrameworkCore;
+using ProjetoBMA.Domain.Entities;
+
+namespace ProjetoBMA.Data
+{
+    public static class SeedData
+    {
+        public static async Task EnsureSeedDataAsync(AppDbContext context)
+        {
+            if (await context.TimeEntries.AnyAsync()) return;
+
+            var list = new List<TimeEntry>
+            {
+                new TimeEntry
+                {
+                    Id = Guid.NewGuid(),
+                    EmployeeId = "EMP001",
+                    EmployeeName = "João Silva",
+                    Timestamp = DateTime.UtcNow.AddDays(-1).AddHours(8),
+                    Type = "Entrada",
+                    Location = "Portaria A",
+                    Notes = "Entrada padrão",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new TimeEntry
+                {
+                    Id = Guid.NewGuid(),
+                    EmployeeId = "EMP001",
+                    EmployeeName = "João Silva",
+                    Timestamp = DateTime.UtcNow.AddDays(-1).AddHours(12),
+                    Type = "Intervalo",
+                    CreatedAt = DateTime.UtcNow
+                },
+                new TimeEntry
+                {
+                    Id = Guid.NewGuid(),
+                    EmployeeId = "EMP002",
+                    EmployeeName = "Maria Oliveira",
+                    Timestamp = DateTime.UtcNow.AddHours(-2),
+                    Type = "Saida",
+                    CreatedAt = DateTime.UtcNow
+                }
+            };
+
+            context.TimeEntries.AddRange(list);
+            await context.SaveChangesAsync();
+        }
+    }
+}
+```
+
+---
+
+## Integração Contínua (CI) com GitHub Actions
+
+O projeto possui um workflow simples de **Integração Contínua** configurado para rodar automaticamente os testes sempre que houver um **push** em qualquer branch ou **pull request**.
+
+O arquivo de workflow `.github/workflows/dotnet-tests.yml` realiza os seguintes passos:
+
+1. **Checkout do repositório**  
+   Utiliza `actions/checkout@v3` para obter a versão mais recente do código.
+
+2. **Configuração do .NET SDK**  
+   Com `actions/setup-dotnet@v3`, garante que o **.NET 8.0** esteja disponível para o pipeline.
+
+3. **Restauração de dependências**  
+   Executa `dotnet restore` no projeto de testes `ProjetoBMA.Tests` para baixar todos os pacotes necessários.
+
+4. **Build do projeto**  
+   Compila o projeto de testes sem restaurar dependências novamente, usando `dotnet build --no-restore`.
+
+5. **Execução dos testes**  
+   Roda `dotnet test` para garantir que todos os testes passem. O `--no-build` evita recompilar o projeto e `--verbosity normal` exibe os logs detalhados da execução.
+
+> Com isso, qualquer alteração no código que quebre testes será identificada automaticamente antes de realizar o merge, mantendo a qualidade do projeto.
+
+---
+
 ## 📂 Estrutura do Projeto
 
 ```bash
