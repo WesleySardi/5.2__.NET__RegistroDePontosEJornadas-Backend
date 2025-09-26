@@ -84,10 +84,17 @@ Tabela: `TimeEntries`
 GET /api/TimeEntries?employeeId=EMP001&type=Entrada&from=2025-09-01&to=2025-09-23&page=1&pageSize=10&sort=timestamp_desc
 ```
 
+**GET por id**
+
+```http
+GET /api/TimeEntries/861C7B37-15C5-4736-A884-8AFBB16FEF07
+```
+
 **POST para criar registro**
 
 ```http
 POST /api/TimeEntries
+
 Content-Type: application/json
 
 {
@@ -104,6 +111,7 @@ Content-Type: application/json
 
 ```http
 PUT /api/TimeEntries/d536caa3-5066-4aa9-9a4e-56036d47ea64
+
 Content-Type: application/json
 
 {
@@ -123,6 +131,22 @@ DELETE /api/TimeEntries/d536caa3-5066-4aa9-9a4e-56036d47ea64
 ```
 
 ---
+
+## Retorno GET por id
+
+```json
+{
+  "id": "861c7b37-15c5-4736-a884-8afbb16fef07",
+  "employeeId": "EMP002",
+  "employeeName": "Maria Oliveira",
+  "timestamp": "2025-09-25T01:06:00",
+  "type": "Entrada",
+  "location": "",
+  "notes": "",
+  "createdAt": "2025-09-25T00:06:18.2104822",
+  "updatedAt": "2025-09-25T20:06:57.9552145"
+}
+```
 
 ## Paginação
 
@@ -206,7 +230,7 @@ Atualize a string de conexão no `appsettings.json`:
 
 ```bash
 # Acessar pasta do projeto
-cd 5.2__.NET__RegistroDePontosEJornadas-Backend
+cd 5.2__.NET__RegistroDePontosEJornadas-Backend\ProjetoBMA
 
 # Restaurar pacotes
 dotnet restore
@@ -215,16 +239,16 @@ dotnet restore
 dotnet ef database update
 
 # Executar API
-dotnet run --launch-profile "http" --project ProjetoBMA/ProjetoBMA.csproj
+dotnet run --launch-profile "https" --project ProjetoBMA.csproj
 ```
 
-**Swagger** disponível em: `https://localhost:5055/swagger`
+**Swagger** disponível em: `https://localhost:7102/swagger/index.html`
 
 ### 4. Rodando os testes
 
 ```bash
 # Acessar pasta do projeto
-cd cd 5.2__.NET__RegistroDePontosEJornadas-Backend/ProjetoBMA.Tests
+cd 5.2__.NET__RegistroDePontosEJornadas-Backend/ProjetoBMA.Tests
 
 # Executar os testes
 dotnet test
@@ -433,6 +457,7 @@ O arquivo de workflow `.github/workflows/dotnet-tests.yml` realiza os seguintes 
 * **Auditoria:** `CreatedAt` e `UpdatedAt`.
 * **Boa prática:** Repositórios retornam entidades, Services fazem mapeamento e regras de negócio.
 * **CORS:** Configurado para permitir consumo da API pelo frontend.
+* ...
 
 ## 🧑‍💻 Autor
 
