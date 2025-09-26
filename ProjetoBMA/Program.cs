@@ -6,6 +6,7 @@ using ProjetoBMA.Repositories;
 using ProjetoBMA.Repositories.Interfaces;
 using ProjetoBMA.Services;
 using ProjetoBMA.Services.Interfaces;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,13 @@ void ConfigureControllersAndSwagger(IServiceCollection services)
 {
     services.AddControllers();
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
+    services.AddSwaggerGen(c =>
+    {
+        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+        c.IncludeXmlComments(xmlPath);
+    });
 }
 
 void ConfigureDbContext(IServiceCollection services, IConfiguration configuration)
