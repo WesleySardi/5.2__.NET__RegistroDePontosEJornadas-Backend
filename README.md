@@ -36,6 +36,12 @@ Controllers → Services → Repositories → Database
 
 ---
 
+## Swagger
+
+<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/a5002597-c87a-48e1-97b9-68b1f25074c4" />
+
+---
+
 ## Banco de Dados (SQL Server)
 
 Tabela: `TimeEntries`
